@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ETXEKOA</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <!-- Logo flotante -->
+    <div class="logo-container" id="logoContainer">
+        <img src="assets/logo.png" alt="ETXEKOA Logo" class="logo" id="logo">
+    </div>
+
+    <!-- Contenedor del mosaico -->
+    <div class="mosaic-container" id="mosaicContainer">
+        <!-- Las imágenes se cargarán dinámicamente con JavaScript -->
+    </div>
+
+    <script>
+        // Array de nombres de imágenes (excluye logo.png)
+        const imageNames = [
+            'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
+            'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg',
+            'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
+            'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg',
+            'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
+            'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg',
+            'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
+            'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg',
+            'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
+            'foto6.jpg', 'foto7.jpg', 'foto8.jpg', 'foto9.jpg', 'foto10.jpg',
+            // 'foto11.jpg', 'foto12.jpg', 'foto13.jpg', 'foto14.jpg', 'foto15.jpg',
+            // 'foto16.jpg', 'foto17.jpg', 'foto18.jpg', 'foto19.jpg', 'foto20.jpg',
+            // 'foto21.jpg', 'foto22.jpg', 'foto23.jpg', 'foto24.jpg', 'foto25.jpg',
+            // 'foto26.jpg', 'foto27.jpg', 'foto28.jpg', 'foto29.jpg', 'foto30.jpg'
+        ];
+
+        // Función para crear el mosaico
+        function createMosaic() {
+            const container = document.getElementById('mosaicContainer');
+            
+            // Array de clases para diferentes tamaños
+            const sizeClasses = ['small', 'medium', 'large', 'wide', 'tall'];
+            
+            imageNames.forEach((imageName, index) => {
+                const imgElement = document.createElement('img');
+                imgElement.src = `assets/${imageName}`;
+                imgElement.alt = `Foto ${index + 1}`;
+                
+                // Asignar clase base y tamaño aleatorio
+                imgElement.className = 'mosaic-image';
+                const randomSize = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
+                imgElement.classList.add(randomSize);
+                
+                imgElement.loading = 'lazy';
+                
+                // Manejo de errores para imágenes que no existen
+                imgElement.onerror = function() {
+                    this.style.display = 'none';
+                };
+                
+                container.appendChild(imgElement);
+            });
+        }
+
+        // Función para manejar el scroll
+        function handleScroll() {
+            const scrollY = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const logo = document.getElementById('logo');
+            const logoContainer = document.getElementById('logoContainer');
+            const mosaicContainer = document.getElementById('mosaicContainer');
+            
+            // Calcular el factor de scroll (0 a 1)
+            const scrollFactor = Math.min(scrollY / (windowHeight * 0.5), 1);
+            
+            // Efecto del logo
+            const initialSize = 200;
+            const finalSize = 80;
+            const newSize = initialSize - (initialSize - finalSize) * scrollFactor;
+            
+            logo.style.width = `${newSize}px`;
+            logo.style.height = `${newSize}px`;
+            
+            // Posicionamiento del logo
+            if (scrollFactor > 0.3) {
+                logoContainer.classList.add('fixed');
+            } else {
+                logoContainer.classList.remove('fixed');
+            }
+            
+            // Efecto de opacidad en las imágenes
+            const images = document.querySelectorAll('.mosaic-image');
+            const initialOpacity = 0.5;
+            const maxOpacity = 1.0;
+            const newOpacity = Math.min(initialOpacity + (scrollFactor * (maxOpacity - initialOpacity)), maxOpacity);
+            
+            images.forEach(img => {
+                img.style.opacity = newOpacity;
+            });
+        }
+
+        // Inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            createMosaic();
+            handleScroll(); // Aplicar estado inicial
+            
+            // Agregar listener de scroll
+            window.addEventListener('scroll', handleScroll);
+        });
+    </script>
+</body>
+
+</html>

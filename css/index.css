@@ -1,0 +1,180 @@
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    overflow-x: hidden;
+    /* Prevenir scroll horizontal */
+}
+
+/* Contenedor del logo */
+.logo-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    transition: all 0.3s ease-out;
+}
+
+.logo-container.fixed {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.logo {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    transition: all 0.3s ease-out;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8));
+}
+
+/* Contenedor del mosaico */
+.mosaic-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 300vh;
+    /* Suficiente altura para hacer scroll */
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: 200px;
+    gap: 8px;
+    padding: 8px;
+    background-color: #000;
+    z-index: 1;
+    /* Detrás del logo */
+}
+
+/* Imágenes del mosaico */
+.mosaic-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.5;
+    /* Opacidad inicial */
+    transition: opacity 0.1s ease-out;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Diferentes tamaños para el mosaico irregular */
+.mosaic-image.small {
+    grid-column: span 1;
+    grid-row: span 1;
+}
+
+.mosaic-image.medium {
+    grid-column: span 1;
+    grid-row: span 2;
+}
+
+.mosaic-image.large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.mosaic-image.wide {
+    grid-column: span 2;
+    grid-row: span 1;
+}
+
+.mosaic-image.tall {
+    grid-column: span 1;
+    grid-row: span 3;
+}
+
+.mosaic-image:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease-out, opacity 0.1s ease-out;
+}
+
+/* Media queries para responsive */
+@media (max-width: 768px) {
+    .mosaic-container {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        grid-auto-rows: 150px;
+        gap: 6px;
+        padding: 6px;
+    }
+
+    .logo {
+        width: 150px;
+        height: 150px;
+    }
+
+    .logo-container.fixed .logo {
+        width: 60px;
+        height: 60px;
+    }
+
+    /* Simplificar tamaños en móvil */
+    .mosaic-image.large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .mosaic-image.tall {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+}
+
+@media (max-width: 480px) {
+    .mosaic-container {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        grid-auto-rows: 120px;
+        gap: 4px;
+        padding: 4px;
+    }
+
+    .logo {
+        width: 120px;
+        height: 120px;
+    }
+
+    .logo-container.fixed .logo {
+        width: 50px;
+        height: 50px;
+    }
+
+    /* Tamaños más simples en pantallas muy pequeñas */
+    .mosaic-image.large,
+    .mosaic-image.wide {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+
+    .mosaic-image.tall,
+    .mosaic-image.medium {
+        grid-column: span 1;
+        grid-row: span 2;
+    }
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #111;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
