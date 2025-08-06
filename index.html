@@ -5,7 +5,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ETXEKOA</title>
-    <link rel="stylesheet" href="css/index.css">
+    <style>
+        /* Reset y configuración base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            overflow-x: hidden;
+        }
+
+        /* Contenedor del logo */
+        .logo-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
+            transition: all 0.3s ease-out;
+        }
+
+        .logo {
+            width: 200px;
+            height: 200px;
+            object-fit: contain;
+            transition: all 0.3s ease-out;
+            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.8));
+            opacity: 1;
+        }
+
+        /* Contenedor del mosaico */
+        .mosaic-container {
+            width: 100%;
+            min-height: 200vh;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-auto-rows: 200px;
+            gap: 8px;
+            padding: 8px;
+            background-color: #000;
+            z-index: 1;
+        }
+
+        /* Imágenes del mosaico */
+        .mosaic-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.3;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            display: block;
+            border-radius: 4px;
+        }
+
+        /* Diferentes tamaños para el mosaico irregular */
+        .mosaic-image.small {
+            grid-column: span 1;
+            grid-row: span 1;
+        }
+
+        .mosaic-image.medium {
+            grid-column: span 1;
+            grid-row: span 2;
+        }
+
+        .mosaic-image.large {
+            grid-column: span 2;
+            grid-row: span 2;
+        }
+
+        .mosaic-image.wide {
+            grid-column: span 2;
+            grid-row: span 1;
+        }
+
+        .mosaic-image.tall {
+            grid-column: span 1;
+            grid-row: span 3;
+        }
+
+        .mosaic-image:hover {
+            transform: scale(1.02);
+        }
+
+        /* Media queries para responsive */
+        @media (max-width: 768px) {
+            .mosaic-container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                grid-auto-rows: 150px;
+                gap: 6px;
+                padding: 6px;
+            }
+
+            .logo {
+                width: 150px;
+                height: 150px;
+            }
+
+            /* Simplificar tamaños en móvil */
+            .mosaic-image.large {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .mosaic-image.tall {
+                grid-column: span 1;
+                grid-row: span 2;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .mosaic-container {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                grid-auto-rows: 120px;
+                gap: 4px;
+                padding: 4px;
+            }
+
+            .logo {
+                width: 120px;
+                height: 120px;
+            }
+
+            /* Tamaños más simples en pantallas muy pequeñas */
+            .mosaic-image.large,
+            .mosaic-image.wide {
+                grid-column: span 2;
+                grid-row: span 1;
+            }
+
+            .mosaic-image.tall,
+            .mosaic-image.medium {
+                grid-column: span 1;
+                grid-row: span 2;
+            }
+        }
+
+        /* Scrollbar personalizada */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
 </head>
 
 <body>
@@ -37,70 +194,66 @@
         // Función para crear el mosaico
         function createMosaic() {
             const container = document.getElementById('mosaicContainer');
-            
+
             // Array de clases para diferentes tamaños
             const sizeClasses = ['small', 'medium', 'large', 'wide', 'tall'];
-            
+
             imageNames.forEach((imageName, index) => {
                 const imgElement = document.createElement('img');
                 imgElement.src = `assets/${imageName}`;
                 imgElement.alt = `Foto ${index + 1}`;
-                
+
                 // Asignar clase base y tamaño aleatorio
                 imgElement.className = 'mosaic-image';
                 const randomSize = sizeClasses[Math.floor(Math.random() * sizeClasses.length)];
                 imgElement.classList.add(randomSize);
-                
+
                 imgElement.loading = 'lazy';
-                
+
                 // Manejo de errores para imágenes que no existen
-                imgElement.onerror = function() {
+                imgElement.onerror = function () {
                     this.style.display = 'none';
                 };
-                
+
                 container.appendChild(imgElement);
             });
         }
 
-        // Función para manejar el scroll
+        // Función para manejar el scroll y cambiar la opacidad y el tamaño del logo
         function handleScroll() {
             const scrollY = window.scrollY;
             const windowHeight = window.innerHeight;
             const logo = document.getElementById('logo');
-            const logoContainer = document.getElementById('logoContainer');
-            const mosaicContainer = document.getElementById('mosaicContainer');
             
             // Calcular el factor de scroll (0 a 1)
-            const scrollFactor = Math.min(scrollY / (windowHeight * 0.5), 1);
+            const scrollFactor = Math.min(scrollY / (windowHeight * 0.8), 1);
             
-            // Efecto del logo
-            const initialSize = 200;
-            const finalSize = 80;
-            const newSize = initialSize - (initialSize - finalSize) * scrollFactor;
-            
-            logo.style.width = `${newSize}px`;
-            logo.style.height = `${newSize}px`;
-            
-            // Posicionamiento del logo
-            if (scrollFactor > 0.3) {
-                logoContainer.classList.add('fixed');
-            } else {
-                logoContainer.classList.remove('fixed');
-            }
-            
-            // Efecto de opacidad en las imágenes
-            const images = document.querySelectorAll('.mosaic-image');
-            const initialOpacity = 0.5;
+            // Calcular nueva opacidad para las imágenes (desde 0.3 hasta 1)
+            const initialOpacity = 0.3;
             const maxOpacity = 1.0;
-            const newOpacity = Math.min(initialOpacity + (scrollFactor * (maxOpacity - initialOpacity)), maxOpacity);
+            const newOpacity = initialOpacity + (scrollFactor * (maxOpacity - initialOpacity));
             
+            // Aplicar la nueva opacidad a todas las imágenes
+            const images = document.querySelectorAll('.mosaic-image');
             images.forEach(img => {
                 img.style.opacity = newOpacity;
             });
+
+            // Efecto del logo - cambiar tamaño y hacerlo desaparecer
+            const initialSize = 200;
+            const finalSize = 0; // El logo desaparece completamente
+            const newSize = initialSize - (initialSize - finalSize) * scrollFactor;
+            
+            // También controlar la opacidad del logo para que desaparezca gradualmente
+            const logoOpacity = Math.max(1 - scrollFactor, 0);
+            
+            logo.style.width = `${newSize}px`;
+            logo.style.height = `${newSize}px`;
+            logo.style.opacity = logoOpacity;
         }
 
         // Inicializar la página
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             createMosaic();
             handleScroll(); // Aplicar estado inicial
             
@@ -109,5 +262,4 @@
         });
     </script>
 </body>
-
 </html>
