@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ETXEKOA</title>
+    <link rel="icon" href="./assets/favicon.ico" type="image/png">
     <style>
         /* Reset y configuración base */
         * {
@@ -92,6 +93,40 @@
             transform: scale(1.02);
         }
 
+        /* Sección de texto */
+        .text-section {
+            background-color: #000;
+            padding: 60px 20px;
+            color: #fff;
+            position: relative;
+            z-index: 2;
+        }
+
+        .text-title {
+            max-width: 800px;
+            margin: 0 auto 40px auto;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .text-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 1.8;
+            text-align: justify;
+        }
+
+        .text-content p {
+            font-size: medium;
+            margin-bottom: 20px;
+        }
+
+
         /* Media queries para responsive */
         @media (max-width: 768px) {
             .mosaic-container {
@@ -115,6 +150,29 @@
             .mosaic-image.tall {
                 grid-column: span 1;
                 grid-row: span 2;
+            }
+
+            .text-title {
+                font-size: 24px;
+                letter-spacing: 1px;
+                margin-bottom: 30px;
+            }
+
+            .text-content {
+                font-size: 16px;
+                line-height: 1.7;
+            }
+
+            .video-section {
+                padding: 30px 15px 50px 15px;
+            }
+
+            .video-container {
+                border-radius: 6px;
+            }
+
+            .text-section {
+                padding: 40px 15px;
             }
         }
 
@@ -143,6 +201,88 @@
                 grid-column: span 1;
                 grid-row: span 2;
             }
+
+            .text-title {
+                margin-top: 1em;
+                font-size: x-large;
+                letter-spacing: 1px;
+                margin-bottom: 25px;
+            }
+
+            .text-content {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+
+            .text-section {
+                padding: 30px 12px;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                font-weight: 500;
+            }
+        }
+
+        /* Sección de video */
+        .video-section {
+            background-color: #000;
+            padding: 40px 20px 90px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .video-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%;
+            /* Aspect ratio 16:9 */
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 8px;
+        }
+
+        /* Botón de idioma flotante */
+        .language-toggle {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: #fff;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .language-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .language-toggle:active {
+            transform: scale(0.95);
         }
 
         /* Scrollbar personalizada */
@@ -166,6 +306,9 @@
 </head>
 
 <body>
+    <!-- Botón de cambio de idioma -->
+    <button class="language-toggle" id="languageToggle">EU</button>
+
     <!-- Logo flotante -->
     <div class="logo-container" id="logoContainer">
         <img src="assets/logo.png" alt="ETXEKOA Logo" class="logo" id="logo">
@@ -176,7 +319,47 @@
         <!-- Las imágenes se cargarán dinámicamente con JavaScript -->
     </div>
 
+    <!-- Sección de texto -->
+    <div class="text-section">
+        <h2 class="text-title">ETXEKOA - PORTU ZAHARREKO JAIAK 2025</h2>
+        <div class="text-content" />
+    </div>
+
+    <!-- Sección de video -->
+    <div class="video-section">
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/9LwBJgkNxzI" title="ETXEKOA - Burning Man Style"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+
     <script>
+        // Textos en diferentes idiomas
+        const texts = {
+            eu: {
+                paragraphs: [
+                    "Aurten, ETXEKOA taldea... basamortura joan gara! Beno, gutxi gorabehera... Ez gara Algortatik atera, baina 2025eko Portu Zaharreko jaien jaitsierarako planetako jaialdirik zoro, sortzaile eta hautseztatuenean oinarritu gara: Burning Man.",
+                    "Nevadan, milaka pertsona elkartzen dira artez, musikaz eta eromenez betetako hiri bat eraikitzeko. Ideia hau Portu Zaharrera ekarri dugu: jendea elkartzen den leku bat, une paregabeak bizitzeko eta lagunekin partekatzeko.",
+                    "Astebetez eskultura erraldoiak eraikitzen dituzte eta basamortuko hauts artean dantzatzen dute. Hemen hautsa Portu Zaharreko hondarragatik aldatzen dugu, bero kiskalgarria abuztuko eguzkiagatik (zorterik bada) eta basamortuko gau hotzak portuko haizeagatik.",
+                    "Eta, Burning Man-en bezala, hemen ere espiritu bat dago: inor ez da ikuslea, denok parte hartzen dugu. Musika, barrea, artea eta adiskidetasuna dira gure suak.",
+                    "Beraz, Marteko rave baterako jantzita jaisten ikusten bagaituzue, ez izutu! ETXEKOA gara, eta aurten grina dakargu gurekin."
+                ]
+            },
+            es: {
+                paragraphs: [
+                    "Este año, la cuadrilla ETXEKOA... ¡hemos ido al desierto! bueno, más o menos... No hemos salido de Algorta, pero para la bajada de las fiestas del Puerto Viejo de 2025 nos hemos basado en el festival más loco, creativo y polvoriento del planeta: Burning Man.",
+                    "En Nevada, miles de personas se unen para construir una ciudad llena de arte, música y locuras. Nosotros hemos traído esta idea al Puerto Viejo: un lugar donde la gente se junta para vivir momentos únicos y compartirlos con las cuadrillas.",
+                    "Durante una semana construyen allí esculturas gigantescas y bailan entre el polvo del desierto. Aquí cambiamos el polvo por la arena del Puerto Viejo, el calor abrasador por el sol de agosto (si hay suerte) y las noches frías del desierto por el viento del puerto.",
+                    "Y, como en Burning Man, aquí también hay un espíritu: nadie es espectador, todos participamos. Música, risa, arte y amistad son nuestro fuego.",
+                    "Así que si nos veis bajar disfrazados de una fiesta rave marciana, ¡no os asusteis! Somos ETXEKOA, y este año llevamos la pasión por dentro."
+                ]
+            }
+        };
+
+        let currentLanguage = 'eu';
+
         // Array de nombres de imágenes (excluye logo.png)
         const imageNames = [
             'foto1.jpg', 'foto2.jpg', 'foto3.jpg', 'foto4.jpg', 'foto5.jpg',
@@ -190,6 +373,32 @@
             'foto41.jpg', 'foto42.jpg', 'foto43.jpg', 'foto44.jpg', 'foto45.jpg',
             'foto46.jpg', 'foto47.jpg', 'foto48.jpg', 'foto49.jpg', 'foto50.jpg'
         ];
+
+        // Función para cambiar idioma
+        function toggleLanguage() {
+            currentLanguage = currentLanguage === 'eu' ? 'es' : 'eu';
+            updateText();
+            updateButton();
+        }
+
+        // Función para actualizar el texto
+        function updateText() {
+            const textContent = document.querySelector('.text-content');
+            const paragraphs = texts[currentLanguage].paragraphs;
+
+            textContent.innerHTML = '';
+            paragraphs.forEach(paragraph => {
+                const p = document.createElement('p');
+                p.textContent = paragraph;
+                textContent.appendChild(p);
+            });
+        }
+
+        // Función para actualizar el botón
+        function updateButton() {
+            const button = document.getElementById('languageToggle');
+            button.textContent = currentLanguage.toUpperCase();
+        }
 
         // Función para crear el mosaico
         function createMosaic() {
@@ -224,15 +433,15 @@
             const scrollY = window.scrollY;
             const windowHeight = window.innerHeight;
             const logo = document.getElementById('logo');
-            
+
             // Calcular el factor de scroll (0 a 1)
             const scrollFactor = Math.min(scrollY / (windowHeight * 0.8), 1);
-            
+
             // Calcular nueva opacidad para las imágenes (desde 0.3 hasta 1)
             const initialOpacity = 0.3;
             const maxOpacity = 1.0;
             const newOpacity = initialOpacity + (scrollFactor * (maxOpacity - initialOpacity));
-            
+
             // Aplicar la nueva opacidad a todas las imágenes
             const images = document.querySelectorAll('.mosaic-image');
             images.forEach(img => {
@@ -243,10 +452,10 @@
             const initialSize = 200;
             const finalSize = 0; // El logo desaparece completamente
             const newSize = initialSize - (initialSize - finalSize) * scrollFactor;
-            
+
             // También controlar la opacidad del logo para que desaparezca gradualmente
             const logoOpacity = Math.max(1 - scrollFactor, 0);
-            
+
             logo.style.width = `${newSize}px`;
             logo.style.height = `${newSize}px`;
             logo.style.opacity = logoOpacity;
@@ -256,10 +465,14 @@
         document.addEventListener('DOMContentLoaded', function () {
             createMosaic();
             handleScroll(); // Aplicar estado inicial
-            
-            // Agregar listener de scroll
+            updateText(); // Cargar texto inicial
+            updateButton(); // Configurar botón inicial
+
+            // Agregar listeners
             window.addEventListener('scroll', handleScroll);
+            document.getElementById('languageToggle').addEventListener('click', toggleLanguage);
         });
     </script>
 </body>
+
 </html>
